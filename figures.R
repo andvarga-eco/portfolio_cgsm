@@ -5,11 +5,11 @@ library(ggpubr)
 
 #Load data
 
-plots<-read_csv("C:/Users/andre/Google Drive/Uninorte/AE-CGSM-Redes/data/biofísica/pesca/Analisis en R/Pesca/plots.csv")
-pesca<-read_csv("C:/Users/andre/Google Drive/Uninorte/AE-CGSM-Redes/data/biofísica/pesca/Analisis en R/Pesca/fig3.csv")
+plots<-read_csv("/plots.csv")
+pesca<-read_csv("/fig3.csv")
 
 
-#Figure 2.
+#Figure 1.
 
 sline<-ggplot(plots,aes(x=fecha))+geom_line(aes(y=salimp),color="black",size=1)+
   theme_minimal()+xlab("")+ylab("Sal. (g/kg)")+
@@ -28,18 +28,18 @@ smes<-plots%>%group_by(mes1)%>%summarise(smes=mean(salimp))%>%mutate(mes1=fct_re
                                                                                            "Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sept","Oct","Nov","Dec"))%>%ggplot(aes(x=mes1,y=smes))+geom_col()+
   xlab("")+ylab("Average salinity (g/kg)")+theme_minimal()+labs(title="Average salinity by month")
 
-fig2<-ggarrange(sline,smes,nrow=2)
-fig2
+fig1<-ggarrange(sline,smes,nrow=2)
+fig1
 
-# Figure 3
+# Figure 2
 
-fig3<-pesca%>%filter(!is.na(salinidad))%>%ggplot(aes(x=rsallab,y=capturakg,fill=name))+geom_bar(position="fill",stat="identity")+ylab("Proportion")+
+fig2<-pesca%>%filter(!is.na(salinidad))%>%ggplot(aes(x=rsallab,y=capturakg,fill=name))+geom_bar(position="fill",stat="identity")+ylab("Proportion")+
   theme_minimal()+theme(legend.title=element_blank(),legend.position="right")+xlab("Salinity levels (g/kg)")+
   scale_x_discrete(limits=c("0-5", "6-18", "19-30",">30"))+scale_fill_brewer(palette="Dark2",direction=-1)
-fig3
+fig2
 
 
-# Figure 4
+# Figure 3
 
 zbox<-ggplot(plots,aes(x=rsallab,y=z,fill=rsallab))+geom_boxplot()+ylim(10,65)+
   theme_minimal()+scale_fill_manual(values = c("#00AFBB","#00AFBB","#00AFBB","#00AFBB"))+ scale_x_discrete(limits=c("0-5", "6-18", "19-30",">30"))+
@@ -55,6 +55,6 @@ yline<-ggplot(plots,aes(x=fecha))+geom_line(aes(y=ermyimp),color="#E7B800",size=
 zline<-ggplot(plots,aes(x=fecha))+geom_line(aes(y=zimp),color="#00AFBB",size=1)+
   theme_minimal()+xlab("")+ylab("CPUE (kg)")
 
-fig4<-ggarrange(zbox,ybox,zline,yline,ncol=2,nrow=2)
-fig4
+fig3<-ggarrange(zbox,ybox,zline,yline,ncol=2,nrow=2)
+fig3
 
